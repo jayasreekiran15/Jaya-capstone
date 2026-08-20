@@ -1,15 +1,12 @@
----
-# Python
-__pycache__/
+```cat << 'EDF' >> .gitignore
+#python
+_Pycache_/
 *.pyc
 .venv/
 venv/
-
-# Secrets — never commit these
+#Secrets -never commit these
 .env
 .env.local
 *.key
-
-# OS
+#OS
 .DS_Store
-```
