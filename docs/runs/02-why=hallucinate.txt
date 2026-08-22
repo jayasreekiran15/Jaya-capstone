@@ -1,0 +1,15 @@
+An LLM may hallucinate for several reasons:
+
+1. **Data Limitations**: Training data may contain inaccuracies or biases, leading to incorrect outputs.
+  
+2. **Ambiguity in Input**: Vague or ambiguous prompts can result in unpredictable responses.
+
+3. **Generalization**: LLMs generalize from seen data, which can lead to the creation of plausible but incorrect information.
+
+4. **Lack of Context**: Insufficient context can cause the model to generate responses that don't align with reality.
+
+5. **Overfitting**: If the model has learned specific patterns too well, it may produce outputs that don’t represent real-world knowledge.
+
+6. **Creativity**: In attempting to generate coherent text, the model may invent details or concepts that don’t exist.
+
+These factors contribute to the phenomenon of "hallucination" where the model generates false or misleading information.
