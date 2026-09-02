@@ -169,9 +169,11 @@ async def fake_ask_llm(
     )
 
 
+
+
 if __name__ == "__main__":
     # Quick smoke test — `python fake_llm.py`
-     async def _demo() -> None:
+    async def _demo() -> None:
         questions = [
             Question(text="What is RAG in one sentence?"),
             Question(text="Why might an LLM hallucinate?"),
@@ -181,4 +183,6 @@ if __name__ == "__main__":
             breakpoint()
             a = await fake_ask_llm(q)
             print(f"Q: {q.text}\nA: {a.text}\n")
-asyncio.run(_demo())
+            
+    asyncio.run(_demo())
+

@@ -26,33 +26,36 @@ import time
 # Live-session stand-in. Same Pydantic shape as the real call.
 from fake_llm import Question, Answer, fake_ask_llm, FakeLLMError
 
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger(__name__)
 
 # ---------- Step 2: one async call ----------
 async def ask_llm(q: Question, fail_rate: float = 0.0) -> Answer:
     """One call. Live demo: fake. Lab: real AsyncOpenAI (same signature)."""
-    return await fake_ask_llm(q, fail_rate=fail_rate)
-    # TODO (Step 2): return await fake_ask_llm(q, fail_rate=fail_rate)
-    # TODO (Step 5): once logging is configured, also log here, e.g.
-    #                log.info(f"asked: {q.text[:40]}")
-    raise NotImplementedError("Step 2 — call fake_ask_llm and return the Answer")
-
-
+    ans=await fake_ask_llm(q, fail_rate=fail_rate)
+    log.info(json.dumps({"events":"asked", "question":q.text[:40]}))
+    return ans
+   
+    
 # ---------- Step 3: retry with exponential backoff ----------
 async def ask_llm_with_retry(
     q: Question, tries: int = 3, fail_rate: float = 0.0
 ) -> Answer:
     """Retry up to ``tries`` times. Wait 1 s, 2 s, 4 s between attempts."""
     # TODO (Step 3):
-    #   for attempt in range(tries):
-    #       try:
-    #           ans = await ask_llm(q, fail_rate=fail_rate)
-    #           ans.retries = attempt
-    #           return ans
-    #       except Exception:
-    #           if attempt == tries - 1:
-    #               raise
-    #           await asyncio.sleep(2 ** attempt)
-    raise NotImplementedError("Step 3 — wrap ask_llm with retry + exponential backoff")
+    for attempt in range(tries):
+        try:
+            ans = await ask_llm(q, fail_rate=fail_rate)
+            ans.retries = attempt
+            return ans
+        except FakeLLMError as exc:
+            if attempt == tries - 1:
+                raise
+            log.warning(json.dumps({"event": "retry", "attempt": attempt + 1, "question": q.text[:40], "error": str(exc)}))
+            await asyncio.sleep(2 ** attempt)
+
+   
+   
 
 
 # ---------- Step 4: gather it all together ----------
@@ -61,20 +64,28 @@ async def run_batch(
 ) -> list[Answer]:
     """Fire all questions in parallel via ``asyncio.gather``."""
     # TODO (Step 4):
-    #   tasks = [ask_llm_with_retry(q, fail_rate=fail_rate) for q in questions]
-    #   return await asyncio.gather(*tasks)
-    raise NotImplementedError("Step 4 — build the tasks list and gather them")
-
+    tasks = [ask_llm_with_retry(q, fail_rate=fail_rate) for q in questions]
+    return await asyncio.gather(*tasks)
+    
+   
 
 # ---------- Step 5: structured (JSON) logging ----------
 # TODO (Step 5):
-#   * class JsonFormatter(logging.Formatter): ...
-#       (emit one JSON record per call with ts / level / msg)
-#   * log = logging.getLogger("pipeline"); log.setLevel(logging.INFO)
-#   * handler = logging.StreamHandler(); handler.setFormatter(JsonFormatter())
-#   * log.addHandler(handler)
-#   * Then go back to ask_llm() and add: log.info(f"asked: {q.text[:40]}")
+    class JsonFormatter(logging.Formatter): 
+        def format(self, record: logging.LogRecord) -> str:
+            return json.dumps({
+            "ts":     round(time.time(), 3),
+            "level":  record.levelname,
+            "msg":    record.getMessage(),
+            "logger": record.name,
+        })
+        log = logging.getLogger("pipeline"); 
+        log.setLevel(logging.INFO)
+        handler = logging.StreamHandler();
+        handler.setFormatter(JsonFormatter()) 
+        log.addHandler(handler)
 
+        
 
 # ---------- main ----------
 if __name__ == "__main__":
