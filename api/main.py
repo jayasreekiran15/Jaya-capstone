@@ -49,6 +49,8 @@ app = FastAPI(
     title="Capstone API",
     description="FastAPI service",
     version="1.0.0",
+    docs_url="/docs",
+    openapi_url="/openapi.json"
 )
 
 
@@ -75,6 +77,12 @@ async def ask_batched(q: Question) -> Answer:
 async def health():
     return {"status": "ok"}
 
+
+# Fixes the 'GET / HTTP/1.1 404 Not Found' log line from search changes made
+
+@app.get("/")
+def read_root():
+    return {"status": "Server is running perfectly!"}
 
 # ─────────────────────────────────────────────────────────────────────────────
 # /ask — streaming endpoint (the contracted one)

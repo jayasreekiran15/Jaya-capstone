@@ -1,3 +1,4 @@
+
 """fake_llm.py — A no-API stand-in for the real LLM call.
 
 Why this file exists
