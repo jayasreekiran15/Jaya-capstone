@@ -18,7 +18,7 @@ import logging
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from fastapi.openapi.docs import get_swagger_ui_html
+
 
 # W2 pipeline — the underlying engine
 from src.pipeline.pipeline import ask_llm as _pipeline_ask_llm
@@ -50,10 +50,9 @@ app = FastAPI(
     title="Capstone API",
     description="FastAPI service",
     version="1.0.0",
-    root_path="/proxy/8000",
-    docs_url=None,       # Disable the default absolute path
-    redoc_url=None,      # Disable the default absolute path
-    openapi_url=None     # Disable default schema visibility rules
+    docs_url="/docs",
+    openapi_url="/openapi.json"
+    
 )
 
 
@@ -80,12 +79,11 @@ async def ask_batched(q: Question) -> Answer:
 async def health():
     return {"status": "ok"}
 
-
-# Fixes the 'GET / HTTP/1.1 404 Not Found' log line from search changes made
-
 @app.get("/")
 def read_root():
-    return {"status": "Server is running perfectly!"}
+    return {"status": "Success", "message": "API server is live!"}
+
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # /ask — streaming endpoint (the contracted one)
