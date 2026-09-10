@@ -92,14 +92,15 @@ def read_root():
 # ─────────────────────────────────────────────────────────────────────────────
 # /ask — streaming endpoint (the contracted one)
 # ─────────────────────────────────────────────────────────────────────────────
-async def stream_answer(question_text: str):
+async def stream_answer(q: Question):
     """Async generator yielding the answer word-by-word.
 
     W3 streams from FastAPI to the client; the pipeline call itself is still
     non-streaming. In W4 the LLM call becomes a real stream end-to-end — this
     generator's shape doesn't change, only what fills it.
     """
-    pipeline_ans = await _pipeline_ask_llm(pipeline_q) 
+    pipeline_q = _PipelineQuestion(text=q)
+    pipeline_ans = await _pipeline_ask_llm(pipeline_q)
     for word in pipeline_ans.text.split(" "):
         yield word + " "
         await asyncio.sleep(0.05)
