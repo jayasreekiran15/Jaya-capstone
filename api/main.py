@@ -50,6 +50,8 @@ app = FastAPI(
     title="Capstone API",
     description="FastAPI service",
     version="1.0.0",
+  # ADDED 2 LINES OF CODE WHEN SWAGGER PAGE WAS NOT GETTING OPEN
+    
     docs_url="/docs",
     openapi_url="/openapi.json"
     
@@ -79,6 +81,8 @@ async def ask_batched(q: Question) -> Answer:
 async def health():
     return {"status": "ok"}
 
+# ADDED BY ME WHEN SWAGGER PAGE WAS NOT GETTING OPENED
+
 @app.get("/")
 def read_root():
     return {"status": "Success", "message": "API server is live!"}
@@ -95,8 +99,7 @@ async def stream_answer(question_text: str):
     non-streaming. In W4 the LLM call becomes a real stream end-to-end — this
     generator's shape doesn't change, only what fills it.
     """
-    pipeline_q = _PipelineQuestion(text=question_text)
-    pipeline_ans = await _pipeline_ask_llm(pipeline_q)
+    pipeline_ans = await _pipeline_ask_llm(pipeline_q) 
     for word in pipeline_ans.text.split(" "):
         yield word + " "
         await asyncio.sleep(0.05)
