@@ -57,6 +57,12 @@ app = FastAPI(
     
 )
 
+@app.get("/metrics")
+def get_metrics():
+    return {
+        "total_requests": 0,  # Replace with your actual counter logic
+        "status": "healthy"
+    }
 
 # ─────────────────────────────────────────────────────────────────────────────
 # /ask_batched — non-streaming reference endpoint
