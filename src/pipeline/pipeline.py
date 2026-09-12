@@ -24,7 +24,7 @@ import logging
 import time
 
 # Live-session stand-in. Same Pydantic shape as the real call.
-from fake_llm import Question, Answer, fake_ask_llm, FakeLLMError
+from .fake_llm import Question, Answer, fake_ask_llm, FakeLLMError
 #from .logging_config import get_logger
 #log = get_logger()
 
