@@ -5,14 +5,26 @@ Two models with different roles:
   - RunSummary:  observation (one row per execution; produced at run end)
 """
 from __future__ import annotations
+import os
 from pathlib import Path
-
+from dotenv import load_dotenv  # 1. Add this import
 from pydantic import BaseModel, Field
+
+
+# 2. Add this line right here to force load the .env file from the root directory
+import os
+from pathlib import Path
+from pydantic import BaseModel, Field
+from dotenv import load_dotenv
+
+# Change this line to step up out of src/pipeline and hit the root folder:
+load_dotenv(dotenv_path=Path(__file__).resolve().parents[2] / ".env")
 
 
 class Settings(BaseModel):
     """Runtime configuration. Validated at construction."""
-
+    
+    openai_api_key: str  = Field(default_factory=lambda: os.getenv("OPENAI_API_KEY", ""))
     questions_csv: Path  = Path("data/questions.csv")
     results_json:  Path  = Path("results.json")
     results_db:    Path  = Path("results.db")

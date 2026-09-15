@@ -10,3 +10,4 @@ venv/
 *.key
 #OS
 .DS_Store
+.env
