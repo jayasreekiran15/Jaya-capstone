@@ -1,0 +1,20 @@
+job_id,strategy_name,prompt_sent,raw_response,total_cost_usd,latency_seconds
+j01,zero_shot,"You are an AI assistant tasked to extract accurate and grounded information.
+Extract the company, role and minimum years of experience from this job text in Jason format. If no years are stated, use null.
+Text: ""Acme Corp is hiring a Senior Software Engineer to join our platform team. The ideal candidate has 5+ years of backend development experience and strong skills in Python and distributed systems.""
+Return as JSON with keys: ""company"", ""role"", ""years_experience_required"".","API Error: Error code: 401 - {'error': {'message': 'Incorrect API key provided: voc-9704*************************************0606. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}",0.0,1.271745204925537
+j01,few_shot,"Extract the company, role, and minimum years of experience from the text where ever the information is not present use null.Extract company name role and minimum years of experience from this job text in Jason format.
+Example 1: ""XYZ Corp seeks a Senior Engineer with 5+ years"" -> {""company"": ""XYZ"", ""role"": ""Senior Engineer"", ""years_experience_required"": 5}
+Example 2: ""Looking for   3 years experience candidate at Soylent Industries"" -> {""company"": ""Soylent Industries"", ""role"":""null"", ""years_experience_required"": 3}
+
+Target Text: ""Acme Corp is hiring a Senior Software Engineer to join our platform team. The ideal candidate has 5+ years of backend development experience and strong skills in Python and distributed systems.""
+Return as JSON with keys: ""company"", ""role"", ""years_experience_required"".","API Error: Error code: 401 - {'error': {'message': 'Incorrect API key provided: voc-9704*************************************0606. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}",0.0,0.6743099689483643
+j01,structured," You are a specialist in extracting information from job posting.Extract Company name,role and yearas of experience from each job posting in json format. 
+
+Text:""Acme Corp is hiring a Senior Software Engineer to join our platform team. The ideal candidate has 5+ years of backend development experience and strong skills in Python and distributed systems.""
+Return as JSON with keys: ""company"", ""role"", ""years_experience_required"".","API Error: Error code: 401 - {'error': {'message': 'Incorrect API key provided: voc-9704*************************************0606. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}",0.0,0.6885089874267578
+j01,cot,"Think step-by-step to extract the information from this job text and provide in Jason format.
+1. Identify the company name. 2. Identify the role. 3. Look closely for numerical experience requirements.
+
+Text: ""Acme Corp is hiring a Senior Software Engineer to join our platform team. The ideal candidate has 5+ years of backend development experience and strong skills in Python and distributed systems.""
+Return a JSON object including your breakdown in a ""reasoning"" key alongside ""company"", ""role"", and ""years_experience_required"".","API Error: Error code: 401 - {'error': {'message': 'Incorrect API key provided: voc-9704*************************************0606. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}",0.0,0.6471390724182129
