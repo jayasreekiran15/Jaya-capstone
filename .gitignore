@@ -1,0 +1,13 @@
+```cat << 'EDF' >> .gitignore
+#python
+_Pycache_/
+*.pyc
+.venv/
+venv/
+#Secrets -never commit these
+.env
+.env.local
+*.key
+#OS
+.DS_Store
+.env

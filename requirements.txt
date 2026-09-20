@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 openai>=1.30.0
 httpx>=0.27.0
 pandas>=2.0.0
 tabulate>=0.9.0
 python-dotenv
+=======
+# Week 2 pinned dependencies
+openai>=1.0
+pydantic>=2.0
+python-dotenv>=1.0
+httpx>=0.27
+>>>>>>> b54a28883e2140627b96af922e2b01e62cd70db9
